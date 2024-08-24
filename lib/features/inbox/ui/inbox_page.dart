@@ -45,6 +45,7 @@ class _InboxPageState extends State<InboxPage> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

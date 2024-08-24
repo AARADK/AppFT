@@ -31,6 +31,7 @@ class _OurAstrologersPageState extends State<OurAstrologersPage> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenHeight * 0.01),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/features/ask_a_question/ui/ask_a_question_page.dart';
 import 'package:flutter_application_1/features/auspicious_time/ui/auspicious_time_page.dart';
 import 'package:flutter_application_1/features/compatibility/ui/compatibility_page.dart';
-import 'package:flutter_application_1/features/compatibility/ui/compatibility_page2.dart';
 import 'package:flutter_application_1/features/horoscope/model/horoscope_model.dart';
 import 'package:flutter_application_1/features/horoscope/service/horoscope_service.dart';
 import 'package:flutter_application_1/features/inbox/ui/inbox_page.dart';
@@ -31,6 +30,7 @@ class _HoroscopePageState extends State<HoroscopePage> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -118,9 +118,31 @@ class _HoroscopePageState extends State<HoroscopePage> {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasError) {
-                        return Center(child: Text('Error: ${snapshot.error}'));
+                        return Center(
+                          child: Text(
+                            'Data is being generated, please wait....',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: screenWidth * 0.040,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w100,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        );
                       } else if (!snapshot.hasData || snapshot.data == null || snapshot.data?.description == null || snapshot.data!.description.isEmpty) {
-                        return Center(child: Text('No horoscope data available at the moment.'));
+                        return Center(
+                          child: Text(
+                            'No horoscope data available at the moment.',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: screenWidth * 0.040,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w100,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        );
                       } else {
                         final horoscope = snapshot.data!;
                         return Padding(

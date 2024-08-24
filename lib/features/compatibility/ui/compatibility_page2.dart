@@ -20,6 +20,7 @@ class CompatibilityPage2 extends StatelessWidget {
     };
 
     return Scaffold(
+       backgroundColor: Colors.white,
       body: Stack(
         children: [
           SingleChildScrollView(

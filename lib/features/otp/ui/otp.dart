@@ -30,10 +30,12 @@ class _OtpOverlayState extends State<OtpOverlay> {
         title: Text(
           'OTP Verification',
           style: TextStyle(
-            color: Color(0xFFFF9933),
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+                                    fontSize: screenWidth * 0.06,
+                                    fontWeight: FontWeight.normal,
+                                    fontFamily: 'Inter',
+                                    color: Color(0xFFFF9933),
+                                  ),
+                                ),
         centerTitle: true,
       ),
       body: Center(

@@ -55,6 +55,7 @@ class PaymentPage extends StatelessWidget {
     final paymentOptions = _paymentService.fetchPaymentOptions(() => _showSuccessOverlay(context));
 
     return Scaffold(
+       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

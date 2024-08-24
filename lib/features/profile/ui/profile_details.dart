@@ -10,13 +10,12 @@ class ProfileDetails extends StatefulWidget {
 }
 
 class _ProfileDetailsState extends State<ProfileDetails> {
-  bool _isLoading = true; // Loading state
-  bool _isEditing = false; // Edit mode state
-  String? _errorMessage; // Error message
-  Map<String, dynamic>? _profileData; // Profile data
-  Map<String, dynamic>? _guestProfileData; // Guest profile data
+  bool _isLoading = true;
+  bool _isEditing = false;
+  String? _errorMessage;
+  Map<String, dynamic>? _profileData;
+  Map<String, dynamic>? _guestProfileData;
 
-  // Controllers for the editable fields
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _dobController = TextEditingController();
@@ -31,8 +30,8 @@ class _ProfileDetailsState extends State<ProfileDetails> {
   Future<void> _fetchProfileData() async {
     try {
       final box = Hive.box('settings');
-      String? token = await box.get('token'); // Get the latest token
-      String url = 'http://52.66.24.172:7001/frontend/Guests/Get'; // Replace {{url}} with your actual URL
+      String? token = await box.get('token');
+      String url = 'http://52.66.24.172:7001/frontend/Guests/Get';
 
       final response = await http.get(
         Uri.parse(url),
@@ -45,40 +44,37 @@ class _ProfileDetailsState extends State<ProfileDetails> {
         var responseData = jsonDecode(response.body);
         if (responseData['error_code'] == "0") {
           setState(() {
-            _profileData = responseData['data']['item']; // Store profile data
-            _guestProfileData = _profileData!['guest_profile']; // Store guest profile data if available
-            // Populate controllers with current profile data
+            _profileData = responseData['data']['item'];
+            _guestProfileData = _profileData!['guest_profile'];
             _nameController.text = _profileData!['name'] ?? '';
             _locationController.text = _profileData!['city_id'] ?? '';
             _dobController.text = _profileData!['dob'] ?? '';
             _tobController.text = _profileData!['tob'] ?? '';
-            _isLoading = false; // Set loading to false
+            _isLoading = false;
           });
         } else {
           setState(() {
-            _errorMessage = responseData['message']; // Set error message
-            _isLoading = false; // Set loading to false
+            _errorMessage = responseData['message'];
+            _isLoading = false;
           });
         }
       } else {
         setState(() {
-          _errorMessage = 'Failed to load profile data'; // Set error message
-          _isLoading = false; // Set loading to false
+          _errorMessage = 'Failed to load profile data';
+          _isLoading = false;
         });
       }
     } catch (e) {
       setState(() {
-        _errorMessage = 'An error occurred: $e'; // Set error message
-        _isLoading = false; // Set loading to false
+        _errorMessage = 'An error occurred: $e';
+        _isLoading = false;
       });
     }
   }
 
   void _updateProfile() async {
-    // Create an instance of your UpdateProfileService
     final updateProfileService = UpdateProfileService();
 
-    // Call the update profile method with the values from the controllers
     bool success = await updateProfileService.updateProfile(
       _nameController.text,
       _locationController.text,
@@ -86,15 +82,13 @@ class _ProfileDetailsState extends State<ProfileDetails> {
       _tobController.text,
     );
 
-    // Show success or error message
     if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Profile updated successfully!')),
       );
-      // Optionally, refresh the profile data after updating
       _fetchProfileData();
       setState(() {
-        _isEditing = false; // Exit edit mode after updating
+        _isEditing = false;
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -105,7 +99,14 @@ class _ProfileDetailsState extends State<ProfileDetails> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final double padding = mediaQuery.size.width * 0.05; // 5% of screen width
+    final double spacing = mediaQuery.size.height * 0.02; // 2% of screen height
+    final double fontSize = mediaQuery.size.width * 0.04; // 4% of screen width
+    final double buttonPadding = mediaQuery.size.width * 0.1; // 10% of screen width
+
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
           'Profile Details',
@@ -116,68 +117,68 @@ class _ProfileDetailsState extends State<ProfileDetails> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context); // Go back to the previous page
+            Navigator.pop(context);
           },
         ),
       ),
       body: Container(
         color: Colors.white,
-        padding: const EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(padding),
         child: _isLoading
-            ? Center(child: CircularProgressIndicator()) // Loading indicator
+            ? Center(child: CircularProgressIndicator())
             : _errorMessage != null
-                ? Center(child: Text(_errorMessage!, style: TextStyle(color: Colors.red, fontSize: 16)))
-                : _buildProfileUI(),
+                ? Center(child: Text(_errorMessage!, style: TextStyle(color: Colors.red, fontSize: fontSize)))
+                : _buildProfileUI(fontSize, spacing, buttonPadding),
       ),
     );
   }
 
-  Widget _buildProfileUI() {
+  Widget _buildProfileUI(double fontSize, double spacing, double buttonPadding) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildTextField('Name', _nameController, Icons.person, _isEditing),
-          SizedBox(height: 20),
-          _buildTextField('City ID', _locationController, Icons.location_city, _isEditing),
-          SizedBox(height: 20),
-          _buildTextField('Date of Birth (YYYY-MM-DD)', _dobController, Icons.cake, _isEditing),
-          SizedBox(height: 20),
-          _buildTextField('Time of Birth (HH:mm)', _tobController, Icons.access_time, _isEditing),
-          SizedBox(height: 30),
+          _buildTextField('Name', _nameController, Icons.person, _isEditing, fontSize),
+          SizedBox(height: spacing),
+          _buildTextField('City ID', _locationController, Icons.location_city, _isEditing, fontSize),
+          SizedBox(height: spacing),
+          _buildTextField('Date of Birth (YYYY-MM-DD)', _dobController, Icons.cake, _isEditing, fontSize),
+          SizedBox(height: spacing),
+          _buildTextField('Time of Birth (HH:mm)', _tobController, Icons.access_time, _isEditing, fontSize),
+          SizedBox(height: spacing * 1.5),
           _guestProfileData == null
-              ? Center(child: Text('Profile is being generated...', style: TextStyle(color: Colors.orange, fontSize: 16)))
-              : _buildGuestProfileUI(),
-          SizedBox(height: 30),
+              ? Center(child: Text('Profile is being generated...', style: TextStyle(color: Colors.orange, fontSize: fontSize)))
+              : _buildGuestProfileUI(fontSize, spacing),
+          SizedBox(height: spacing * 1.5),
           _isEditing
               ? Center(
                   child: ElevatedButton(
                     onPressed: _updateProfile,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFFFF9933),
-                      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                      padding: EdgeInsets.symmetric(horizontal: buttonPadding, vertical: spacing),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
                     ),
-                    child: Text('Update Profile', style: TextStyle(fontSize: 16)),
+                    child: Text('Update Profile', style: TextStyle(fontSize: fontSize)),
                   ),
                 )
               : Center(
                   child: ElevatedButton(
                     onPressed: () {
                       setState(() {
-                        _isEditing = true; // Enter edit mode
+                        _isEditing = true;
                       });
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFFFF9933),
-                      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                      padding: EdgeInsets.symmetric(horizontal: buttonPadding, vertical: spacing),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
                     ),
-                    child: Text('Edit Profile', style: TextStyle(fontSize: 16)),
+                    child: Text('Edit Profile', style: TextStyle(fontSize: fontSize)),
                   ),
                 ),
         ],
@@ -185,38 +186,99 @@ class _ProfileDetailsState extends State<ProfileDetails> {
     );
   }
 
-  Widget _buildGuestProfileUI() {
+  Widget _buildGuestProfileUI(double fontSize, double spacing) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Guest Profile Details:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-        SizedBox(height: 10),
-        Text('Basic Description: ${_guestProfileData!['basic_description'] ?? ''}'),
-        Text('Lucky Color: ${_guestProfileData!['lucky_color'] ?? ''}'),
-        Text('Lucky Gem: ${_guestProfileData!['lucky_gem'] ?? ''}'),
-        Text('Lucky Number: ${_guestProfileData!['lucky_number'] ?? ''}'),
-        Text('Rashi Name: ${_guestProfileData!['rashi_name'] ?? ''}'),
-        Text('Compatibility: ${_guestProfileData!['compatibility_description'] ?? ''}'),
+        Text(
+          'Guest Profile Details:',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize),
+        ),
+        SizedBox(height: spacing / 2),
+
+        // Basic Description
+        _buildGuestProfileDetail(
+          label: 'Basic Description',
+          value: _guestProfileData!['basic_description'] ?? '',
+          fontSize: fontSize,
+        ),
+
+        // Lucky Color
+        _buildGuestProfileDetail(
+          label: 'Lucky Color',
+          value: _guestProfileData!['lucky_color'] ?? '',
+          fontSize: fontSize,
+        ),
+
+        // Lucky Gem
+        _buildGuestProfileDetail(
+          label: 'Lucky Gem',
+          value: _guestProfileData!['lucky_gem'] ?? '',
+          fontSize: fontSize,
+        ),
+
+        // Lucky Number
+        _buildGuestProfileDetail(
+          label: 'Lucky Number',
+          value: _guestProfileData!['lucky_number'] ?? '',
+          fontSize: fontSize,
+        ),
+
+        // Rashi Name
+        _buildGuestProfileDetail(
+          label: 'Rashi Name',
+          value: _guestProfileData!['rashi_name'] ?? '',
+          fontSize: fontSize,
+        ),
+
+        // Compatibility
+        _buildGuestProfileDetail(
+          label: 'Compatibility',
+          value: _guestProfileData!['compatibility_description'] ?? '',
+          fontSize: fontSize,
+        ),
       ],
     );
   }
 
-  Widget _buildTextField(String label, TextEditingController controller, IconData icon, bool isEditing) {
+  Widget _buildGuestProfileDetail({required String label, required String value, required double fontSize}) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: fontSize * 0.4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '$label: ',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize,color: Color(0xFFFF9933) ),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: TextStyle(fontSize: fontSize),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTextField(String label, TextEditingController controller, IconData icon, bool isEditing, double fontSize) {
     return TextField(
       controller: controller,
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(color: Colors.black54, fontSize: 14),
+        labelStyle: TextStyle(color: Color(0xFFFF9933), fontSize: fontSize),
         prefixIcon: Icon(icon, color: Color(0xFFFF9933)),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        focusedBorder: OutlineInputBorder(
+        enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Color(0xFFFF9933)),
+          borderSide: BorderSide(color: Colors.black54),
         ),
       ),
-      enabled: isEditing, // Enable or disable the text field based on edit mode
+      style: TextStyle(fontSize: fontSize),
+      enabled: isEditing,
     );
   }
 }

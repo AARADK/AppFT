@@ -56,6 +56,7 @@ class _DashboardState extends State<DashboardPage> {
     final double buttonHeight = size.height * 0.07;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           GestureDetector(
@@ -178,58 +179,62 @@ class _DashboardState extends State<DashboardPage> {
                             }
                           },
                         ),
-                        SizedBox(height: 16),
-                        FutureBuilder<DashboardData>(
-                          future: _dashboardDataFuture,
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
-                            } else if (snapshot.hasError) {
-                              return Center(child: Text('Error: ${snapshot.error}'));
-                            } else if (snapshot.hasData) {
-                              final data = snapshot.data!;
-                              return Container(
-                                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    _buildCircleSection(
-                                      context,
-                                      title: 'Horoscope',
-                                      imageUrl: 'assets/images/horoscope2.png',
-                                      imageWidth: circleSize * 0.67,
-                                      imageHeight: circleSize * 0.75,
-                                      page: HoroscopePage(),
-                                      rating: data.horoscope.rating,
-                                    ),
-                                    SizedBox(height: 16),
-                                    _buildCircleSection(
-                                      context,
-                                      title: 'Compatibility',
-                                      imageUrl: 'assets/images/compatibility2.png',
-                                      imageWidth: circleSize * 0.67,
-                                      imageHeight: circleSize * 0.55,
-                                      page: CompatibilityPage(),
-                                      compatibility: data.compatibility,
-                                    ),
-                                    SizedBox(height: 16),
-                                    _buildCircleSection(
-                                      context,
-                                      title: 'Auspicious Time',
-                                      imageUrl: 'assets/images/auspicious2.png',
-                                      imageWidth: circleSize * 0.67,
-                                      imageHeight: circleSize * 0.75,
-                                      page: AuspiciousTimePage(),
-                                      rating: data.auspicious.rating,
-                                    ),
-                                  ],
-                                ),
-                              );
-                            } else {
-                              return Center(child: Text('No data available'));
-                            }
-                          },
-                        ),
+                        SizedBox(height: 10),
+FutureBuilder<DashboardData>(
+  future: _dashboardDataFuture,
+  builder: (context, snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      // While the data is being fetched
+      return Center(child: CircularProgressIndicator());
+    } else if (snapshot.hasError) {
+      // Handle errors gracefully
+      return Center(child: Text('Data is being generated, please wait...'));
+    } else if (snapshot.hasData) {
+      final data = snapshot.data!;
+      return Container(
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _buildCircleSection(
+              context,
+              title: 'Horoscope',
+              imageUrl: 'assets/images/horoscope2.png',
+              imageWidth: circleSize * 0.67,
+              imageHeight: circleSize * 0.75,
+              page: HoroscopePage(),
+              rating: data.horoscope.rating,
+            ),
+            SizedBox(height: 16),
+            _buildCircleSection(
+              context,
+              title: 'Compatibility',
+              imageUrl: 'assets/images/compatibility2.png',
+              imageWidth: circleSize * 0.67,
+              imageHeight: circleSize * 0.55,
+              page: CompatibilityPage(),
+              compatibility: data.compatibility,
+            ),
+            SizedBox(height: 16),
+            _buildCircleSection(
+              context,
+              title: 'Auspicious Time',
+              imageUrl: 'assets/images/auspicious2.png',
+              imageWidth: circleSize * 0.67,
+              imageHeight: circleSize * 0.75,
+              page: AuspiciousTimePage(),
+              rating: data.auspicious.rating,
+            ),
+          ],
+        ),
+      );
+    } else {
+      // Handle the case where data is not available for any other reason
+      return Center(child: Text('Data is being generated, please wait...'));
+    }
+  },
+),
+
                         SizedBox(height: 16),
                         Container(
                           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),

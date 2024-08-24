@@ -21,7 +21,6 @@ class _CompatibilityPageState extends State<CompatibilityPage> {
   @override
   void initState() {
     super.initState();
-    // Fetch the compatibility data with a specific date
     _compatibilityFuture = _service.getCompatibility('2024-08-18'); // Use dynamic date if needed
   }
 
@@ -31,6 +30,7 @@ class _CompatibilityPageState extends State<CompatibilityPage> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -118,9 +118,29 @@ class _CompatibilityPageState extends State<CompatibilityPage> {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasError) {
-                        return Center(child: Text('Error: ${snapshot.error}'));
+                        return Center(
+                          child: Text(
+                             'Data is being generated, please wait....',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: screenWidth * 0.04,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w100,
+                            ),
+                          ),
+                        );
                       } else if (!snapshot.hasData || snapshot.data == null || snapshot.data?.compatibility == null || snapshot.data!.compatibility.isEmpty) {
-                        return Center(child: Text('No compatibility data available at the moment.'));
+                        return Center(
+                          child: Text(
+                            'No compatibility data available at the moment. Please check back later.',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: screenWidth * 0.04,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w100,
+                            ),
+                          ),
+                        );
                       } else {
                         final compatibility = snapshot.data!;
                         return Padding(

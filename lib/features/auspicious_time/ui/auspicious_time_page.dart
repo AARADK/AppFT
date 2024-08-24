@@ -5,7 +5,6 @@ import 'package:flutter_application_1/features/auspicious_time/repo/auspicious_t
 import 'package:flutter_application_1/features/auspicious_time/service/auspicious_time_service.dart';
 import 'package:flutter_application_1/features/auspicious_time/ui/auspicious_time_page.dart';
 import 'package:flutter_application_1/features/compatibility/ui/compatibility_page.dart';
-import 'package:flutter_application_1/features/compatibility/ui/compatibility_page2.dart';
 import 'package:flutter_application_1/features/horoscope/ui/horoscope_page.dart';
 import 'package:flutter_application_1/features/inbox/ui/inbox_page.dart';
 import 'package:flutter_application_1/features/payment/ui/payment_page.dart';
@@ -32,6 +31,7 @@ class _AuspiciousPageState extends State<AuspiciousTimePage> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -119,9 +119,19 @@ class _AuspiciousPageState extends State<AuspiciousTimePage> {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasError) {
-                        return Center(child: Text('Error: ${snapshot.error}'));
+                       return Center(
+                          child: Text(
+                             'Data is being generated, please wait....',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: screenWidth * 0.04,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w100,
+                            ),
+                          ),
+                        );
                       } else if (!snapshot.hasData || snapshot.data == null || snapshot.data?.description == null || snapshot.data!.description.isEmpty) {
-                        return Center(child: Text('No auspicious time data available at the moment.'));
+                        return Center(child: Text('We couldn’t find any auspicious time information at the moment. Please check back later.'));
                       } else {
                         final auspicious = snapshot.data!;
                         return Padding(
@@ -188,7 +198,7 @@ class _AuspiciousPageState extends State<AuspiciousTimePage> {
                       );
                     },
                     child: Text(
-                      'Get full reading',
+                      'Get Full Reading',
                       style: TextStyle(
                         fontSize: screenWidth * 0.05,
                         fontFamily: 'Inter',

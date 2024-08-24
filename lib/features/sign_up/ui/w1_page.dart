@@ -206,23 +206,24 @@ class _W1PageState extends State<W1Page> {
       try {
         // Attempt to login the user
         bool isLoggedIn = await _signUpRepo.login(email);
-        print('Login success: $isLoggedIn'); // Debug statement
 
-        setState(() {
-          _isLoading = false; // Stop loading
-        });
-
-        // Always navigate to OTP page after login
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => OtpOverlay(email: email)),
-        );
+        if (isLoggedIn) {
+          // Login successful, navigate to OTP page
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => OtpOverlay(email: email)),
+          );
+        } else {
+          // Email not registered, show appropriate message
+          _showSnackBar(context, 'Email not registered. Please sign up.');
+        }
       } catch (e) {
         print('Login error: $e'); // Debug statement
+        _showSnackBar(context, 'An error occurred during login.');
+      } finally {
         setState(() {
           _isLoading = false; // Stop loading
         });
-        _showSnackBar(context, 'An error occurred during login.');
       }
     } else {
       _showSnackBar(context, 'Please enter your email.');
@@ -273,13 +274,14 @@ class _W1PageState extends State<W1Page> {
         // Attempt to sign up the user
         bool isSignedUp = await _signUpRepo.signUp(user);
         if (isSignedUp) {
-          // Navigate to OTP page after signup
+          // Signup successful, navigate to OTP page
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => OtpOverlay(email: user.email)),
           );
         } else {
-          _showSnackBar(context, 'This email is already registered! Try Again!.');
+          // Email already registered, show appropriate message
+          _showSnackBar(context, 'This email is already registered! Try logging in.');
         }
       } catch (e) {
         print('Signup error: $e');
@@ -293,31 +295,19 @@ class _W1PageState extends State<W1Page> {
   }
 
   bool _validateInputs() {
-    if (_nameController.text.isEmpty) {
-      _showSnackBar(context, 'Name is required.');
-      return false;
-    }
-    if (_locationController.text.isEmpty) {
-      _showSnackBar(context, 'Location is required.');
-      return false;
-    }
-    if (_birthDateController.text.isEmpty) {
-      _showSnackBar(context, 'Birth date is required.');
-      return false;
-    }
-    if (_birthTimeController.text.isEmpty) {
-      _showSnackBar(context, 'Birth time is required.');
-      return false;
-    }
-    if (_emailController.text.isEmpty) {
-      _showSnackBar(context, 'Email is required.');
-      return false;
-    }
-    return true;
+    return _nameController.text.isNotEmpty &&
+        _emailController.text.isNotEmpty &&
+        _locationController.text.isNotEmpty &&
+        _birthDateController.text.isNotEmpty &&
+        _birthTimeController.text.isNotEmpty;
   }
 
   void _showSnackBar(BuildContext context, String message) {
-    final snackBar = SnackBar(content: Text(message));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: Duration(seconds: 3),
+      ),
+    );
   }
 }

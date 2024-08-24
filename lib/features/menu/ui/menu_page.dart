@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/features/menu/service/menu_service.dart';
 import 'package:flutter_application_1/features/settings/ui/settings_page.dart';
+import 'package:flutter_application_1/features/sign_up/ui/w1_page.dart';
 
 class Menu extends StatefulWidget {
   final VoidCallback? closeMenu; // Add this parameter
@@ -119,6 +120,12 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                             }),
                             _buildMenuItem(context, 'About Us', Icons.info, () {
                               MenuService.navigateToAboutUs(context);
+                            }),
+                            _buildMenuItem(context, 'Log out', Icons.logout, () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => W1Page()),
+                              );
                             }),
                           ],
                         ),

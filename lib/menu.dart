@@ -6,6 +6,7 @@ import 'package:flutter_application_1/features/compatibility/ui/compatibility_pa
 import 'package:flutter_application_1/features/horoscope/ui/horoscope_page.dart';
 import 'package:flutter_application_1/features/profile/ui/profile_details.dart';
 import 'package:flutter_application_1/features/settings/ui/settings_page.dart';
+import 'package:flutter_application_1/features/sign_up/ui/w1_page.dart';
 
 class Menu extends StatefulWidget {
   @override
@@ -141,6 +142,12 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) => AboutUsPage()),
+                              );
+                            }),
+                            _buildMenuItem(context, 'Log out', Icons.logout, () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => W1Page()),
                               );
                             }),
                           ],

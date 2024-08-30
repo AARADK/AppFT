@@ -44,8 +44,8 @@ class OfferPage extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Container(
-               margin: EdgeInsets.all(8.0),
-               padding: EdgeInsets.all(16.0),
+              margin: EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.white,
@@ -58,15 +58,18 @@ class OfferPage extends StatelessWidget {
                 ],
               ),
               child: DataTable(
-                columnSpacing: screenWidth * 0.05, // Responsive column spacing
-                headingRowHeight: 56,
-                dataRowHeight: 64,
-                columns: const [
+                columnSpacing: screenWidth * 0.05, // Adjusted for better spacing
+                headingRowHeight: 48, // Adjusted for better alignment
+                dataRowHeight: 56, // Adjusted for better alignment
+                columns: [
                   DataColumn(
                     label: Expanded(
                       child: Text(
                         'Title',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: screenWidth * 0.04,
+                        ),
                       ),
                     ),
                   ),
@@ -74,7 +77,10 @@ class OfferPage extends StatelessWidget {
                     label: Expanded(
                       child: Text(
                         'No. of Questions',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: screenWidth * 0.04,
+                        ),
                       ),
                     ),
                   ),
@@ -82,7 +88,10 @@ class OfferPage extends StatelessWidget {
                     label: Expanded(
                       child: Text(
                         'Action',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: screenWidth * 0.04,
+                        ),
                       ),
                     ),
                   ),
@@ -90,11 +99,17 @@ class OfferPage extends StatelessWidget {
                 rows: [
                   DataRow(
                     cells: [
-                      DataCell(Text('Horoscope')),
-                      DataCell(Text('${offer.horoscopeQuestionCount ?? 0}')),
+                      DataCell(Text(
+                        'Horoscope',
+                        style: TextStyle(fontSize: screenWidth * 0.038),
+                      )),
+                      DataCell(Text(
+                        '${offer.horoscopeQuestionCount ?? 0}',
+                        style: TextStyle(fontSize: screenWidth * 0.038),
+                      )),
                       DataCell(
-                        TextButton(
-                          onPressed: () {
+                        GestureDetector(
+                          onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -102,18 +117,41 @@ class OfferPage extends StatelessWidget {
                               ),
                             );
                           },
-                          child: Text('Choose'),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 6.0,
+                              horizontal: 12.0,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFFF9933),
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                            child: Text(
+                              'Choose',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: screenWidth * 0.035,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ],
                   ),
                   DataRow(
                     cells: [
-                      DataCell(Text('Compatibility')),
-                      DataCell(Text('${offer.compatibilityQuestionCount ?? 0}')),
+                      DataCell(Text(
+                        'Compatibility',
+                        style: TextStyle(fontSize: screenWidth * 0.038),
+                      )),
+                      DataCell(Text(
+                        '${offer.compatibilityQuestionCount ?? 0}',
+                        style: TextStyle(fontSize: screenWidth * 0.038),
+                      )),
                       DataCell(
-                        TextButton(
-                          onPressed: () {
+                        GestureDetector(
+                          onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -121,18 +159,41 @@ class OfferPage extends StatelessWidget {
                               ),
                             );
                           },
-                          child: Text('Choose'),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 6.0,
+                              horizontal: 12.0,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFFF9933),
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                            child: Text(
+                              'Choose',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: screenWidth * 0.035,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ],
                   ),
                   DataRow(
                     cells: [
-                      DataCell(Text('Auspicious')),
-                      DataCell(Text('1')), // Assuming there's one question for auspicious
+                      DataCell(Text(
+                        'Auspicious',
+                        style: TextStyle(fontSize: screenWidth * 0.038),
+                      )),
+                      DataCell(Text(
+                        '1',
+                        style: TextStyle(fontSize: screenWidth * 0.038),
+                      )),
                       DataCell(
-                        TextButton(
-                          onPressed: () {
+                        GestureDetector(
+                          onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -140,7 +201,24 @@ class OfferPage extends StatelessWidget {
                               ),
                             );
                           },
-                          child: Text('Choose'),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 6.0,
+                              horizontal: 12.0,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFFF9933),
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                            child: Text(
+                              'Choose',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: screenWidth * 0.035,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ],

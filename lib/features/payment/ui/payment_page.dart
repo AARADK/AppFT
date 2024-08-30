@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/features/auspicious_time/ui/auspicious_time_page.dart';
 import 'package:flutter_application_1/features/compatibility/ui/compatibility_page.dart';
+import 'package:flutter_application_1/features/dashboard/ui/dashboard_page.dart';
 import 'package:flutter_application_1/features/inbox/ui/inbox_page.dart';
 import 'package:flutter_application_1/features/payment/service/payment_service.dart';
 import 'package:flutter_application_1/features/compatibility/ui/compatibility_page2.dart';
@@ -68,7 +69,10 @@ class PaymentPage extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Navigator.pop(context); // Navigate back to previous screen
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => DashboardPage()),
+                        );
                       },
                       child: Text(
                         'Done',

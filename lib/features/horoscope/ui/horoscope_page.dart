@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/features/ask_a_question/ui/ask_a_question_page.dart';
 import 'package:flutter_application_1/features/auspicious_time/ui/auspicious_time_page.dart';
 import 'package:flutter_application_1/features/compatibility/ui/compatibility_page.dart';
+import 'package:flutter_application_1/features/dashboard/ui/dashboard_page.dart';
 import 'package:flutter_application_1/features/horoscope/model/horoscope_model.dart';
 import 'package:flutter_application_1/features/horoscope/service/horoscope_service.dart';
 import 'package:flutter_application_1/features/inbox/ui/inbox_page.dart';
@@ -45,10 +46,13 @@ class _HoroscopePageState extends State<HoroscopePage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context); // Navigate back to previous screen
-                            },
+                           GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => DashboardPage()),
+                        );
+                      },
                             child: Text(
                               'Done',
                               style: TextStyle(

@@ -76,10 +76,7 @@ class _AskQuestionPageState extends State<AskQuestion> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => DashboardPage()),
-                        );
+                        Navigator.pop(context); 
                       },
                       child: Text(
                         'Done',

@@ -4,6 +4,7 @@ import 'package:flutter_application_1/features/auspicious_time/ui/auspicious_tim
 import 'package:flutter_application_1/features/compatibility/model/compatibility_model.dart';
 import 'package:flutter_application_1/features/compatibility/service/compatibility_service.dart';
 import 'package:flutter_application_1/features/compatibility/ui/compatibility_page2.dart';
+import 'package:flutter_application_1/features/dashboard/ui/dashboard_page.dart';
 import 'package:flutter_application_1/features/horoscope/ui/horoscope_page.dart';
 import 'package:flutter_application_1/features/inbox/ui/inbox_page.dart';
 import 'package:flutter_application_1/features/payment/ui/payment_page.dart';
@@ -45,10 +46,13 @@ class _CompatibilityPageState extends State<CompatibilityPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context); // Navigate back to previous screen
-                            },
+                           GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => DashboardPage()),
+                        );
+                      },
                             child: Text(
                               'Done',
                               style: TextStyle(

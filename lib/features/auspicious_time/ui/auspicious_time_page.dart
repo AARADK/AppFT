@@ -5,6 +5,7 @@ import 'package:flutter_application_1/features/auspicious_time/repo/auspicious_t
 import 'package:flutter_application_1/features/auspicious_time/service/auspicious_time_service.dart';
 import 'package:flutter_application_1/features/auspicious_time/ui/auspicious_time_page.dart';
 import 'package:flutter_application_1/features/compatibility/ui/compatibility_page.dart';
+import 'package:flutter_application_1/features/dashboard/ui/dashboard_page.dart';
 import 'package:flutter_application_1/features/horoscope/ui/horoscope_page.dart';
 import 'package:flutter_application_1/features/inbox/ui/inbox_page.dart';
 import 'package:flutter_application_1/features/payment/ui/payment_page.dart';
@@ -46,10 +47,13 @@ class _AuspiciousPageState extends State<AuspiciousTimePage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context); // Navigate back to previous screen
-                            },
+                           GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => DashboardPage()),
+                        );
+                      },
                             child: Text(
                               'Done',
                               style: TextStyle(

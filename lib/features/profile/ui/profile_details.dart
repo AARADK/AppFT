@@ -21,6 +21,8 @@ class _ProfileDetailsState extends State<ProfileDetails> {
   final TextEditingController _dobController = TextEditingController();
   final TextEditingController _tobController = TextEditingController();
 
+  bool _isExpanded = false;
+
   @override
   void initState() {
     super.initState();
@@ -201,6 +203,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
           label: 'Basic Description',
           value: _guestProfileData!['basic_description'] ?? '',
           fontSize: fontSize,
+          isExpandable: true, // Indicating that this field is expandable
         ),
 
         // Lucky Color
@@ -241,44 +244,91 @@ class _ProfileDetailsState extends State<ProfileDetails> {
     );
   }
 
-  Widget _buildGuestProfileDetail({required String label, required String value, required double fontSize}) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: fontSize * 0.4),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '$label: ',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize,color: Color(0xFFFF9933) ),
-          ),
-          Expanded(
-            child: Text(
-              value,
-              style: TextStyle(fontSize: fontSize),
+  Widget _buildGuestProfileDetail({
+    required String label,
+    required String value,
+    required double fontSize,
+    bool isExpandable = false,
+  }) {
+    if (isExpandable) {
+      final int maxLength = 100; // Define the maximum number of characters before truncating
+      bool isTruncated = value.length > maxLength && !_isExpanded;
+
+      return Padding(
+        padding: EdgeInsets.symmetric(vertical: fontSize * 0.4),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '$label: ',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize, color: Color(0xFFFF9933)),
+                ),
+                Expanded(
+                  child: Text(
+                    isTruncated ? '${value.substring(0, maxLength)}...' : value,
+                    style: TextStyle(fontSize: fontSize),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
-    );
+            if (isTruncated || _isExpanded)
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _isExpanded = !_isExpanded;
+                  });
+                },
+                child: Text(
+                  _isExpanded ? 'View Less' : 'View More',
+                  style: TextStyle(
+                    fontSize: fontSize * 0.9,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
+          ],
+        ),
+      );
+    } else {
+      return Padding(
+        padding: EdgeInsets.symmetric(vertical: fontSize * 0.4),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '$label: ',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize, color: Color(0xFFFF9933)),
+            ),
+            Expanded(
+              child: Text(
+                value,
+                style: TextStyle(fontSize: fontSize),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
-  Widget _buildTextField(String label, TextEditingController controller, IconData icon, bool isEditing, double fontSize) {
+  Widget _buildTextField(
+      String label, TextEditingController controller, IconData icon, bool isEditable, double fontSize) {
     return TextField(
       controller: controller,
+      enabled: isEditable,
+      style: TextStyle(fontSize: fontSize),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(color: Color(0xFFFF9933), fontSize: fontSize),
-        prefixIcon: Icon(icon, color: Color(0xFFFF9933)),
+        labelStyle: TextStyle(fontSize: fontSize),
+        prefixIcon: Icon(icon, size: fontSize * 1.5),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.black54),
-        ),
       ),
-      style: TextStyle(fontSize: fontSize),
-      enabled: isEditing,
     );
   }
 }

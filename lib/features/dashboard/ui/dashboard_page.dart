@@ -22,11 +22,15 @@ class _DashboardState extends State<DashboardPage> {
   late Future<DashboardData> _dashboardDataFuture;
   late Future<List<Offer>> _offersFuture; // Added for offers data
 
+  String formatDate(DateTime date) {
+    return "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
+  }
+
   @override
   void initState() {
     super.initState();
     
-    _dashboardDataFuture = DashboardService().getDashboardData('2024-08-19'); // Pass the appropriate date
+    _dashboardDataFuture = DashboardService().getDashboardData(formatDate(DateTime.now()));
     _offersFuture = OfferService().getTopOffers(); // Fetch offers data
   }
 
